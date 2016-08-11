@@ -162,7 +162,7 @@ public class MyDate {
             day_left = duration % 365 + 365 - (numOfLeap_t(year_tmp) - numOfLeap_t(year));
         }
         this.set(year_tmp, 1, 1);
-        assert day_left <= 365;
+       // assert day_left <= 365;
         return this.new_year_add_year_not_change(day_left);
     }
 
@@ -173,16 +173,18 @@ public class MyDate {
      * @return
      */
     private MyDate new_year_add_year_not_change(int duration) {
-        int month;
+        int month,index;
         if (isLeapYear()) {
             int Msum_leap[] = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335};
             month = getBinaryInsertIndex(duration, Msum_leap);
+            index=Msum_leap[month - 1];
         } else {
             int Msum[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
             month = getBinaryInsertIndex(duration, Msum);
+            index=Msum[month - 1];
         }
         this.setMonth(month);
-        this.setDay(1 + (duration - getFirstDayIndexOfMonth(month)));
+        this.setDay(1 + (duration - index));
         return this;
     }
 
@@ -196,19 +198,8 @@ public class MyDate {
                 start = mid + 1;
             }
         }
-        assert start != 0;
+     //   assert start != 0;
         return start;
-    }
-
-    private int getFirstDayIndexOfMonth(int month) {
-        assert month < 13 && month > 0;
-        if (isLeapYear()) {
-            int Msum_leap[] = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335};
-            return Msum_leap[month - 1];
-        } else {
-            int Msum[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-            return Msum[month - 1];
-        }
     }
 
     @Override
